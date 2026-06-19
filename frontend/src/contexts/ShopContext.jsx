@@ -13,12 +13,23 @@ const ShopContextProvider = ({ children }) => {
   const [showSearch, setShowSearch] = useState(false);
   const [cartItems, setCartItems] = useState({});
   const [products, setProducts] = useState([]);
+  const [favorites, setFavorites] = useState([]);
+  useEffect(() => {
+  console.log("Favorites State:", favorites);
+  }, [favorites]);
   const [token, setToken] = useState(
     localStorage.getItem("token") ? localStorage.getItem("token") : ""
   );
   const navigate = useNavigate();
 
   const addToCart = async (itemId, size) => {
+
+    if (!token) {
+      toast.error("Please login to add items to cart");
+      navigate("/login");
+      return;
+    }
+
     if (!size) {
       return toast.error("Select Size");
     }
@@ -35,19 +46,18 @@ const ShopContextProvider = ({ children }) => {
       cartData[itemId] = {};
       cartData[itemId][size] = 1;
     }
+
     setCartItems(cartData);
 
-    if (token) {
       try {
-        await axios.post(
-          backendUrl + "/api/cart/add",
-          { itemId, size },
-          { headers: { token } }
+          await axios.post(
+            backendUrl + "/api/cart/add",
+            { itemId, size },
+            { headers: { token } }
         );
-      } catch (error) {
-        console.log(error);
-        toast.error(error.message);
-      }
+    } catch (error) {
+      console.log(error);
+      toast.error(error.message);
     }
   };
 
@@ -100,6 +110,60 @@ const ShopContextProvider = ({ children }) => {
     }
     return totalAmount;
   };
+  
+  const toggleFavorite = async (productId) => {
+    try {
+      if (!token) {
+        toast.error("Please login to save favorites");
+        navigate("/login");
+        return;
+      }
+
+      const response = await axios.post(
+        backendUrl + "/api/user/favorite",
+        { productId },
+        { headers: { token } }
+      );
+
+      if (response.data.success) {
+        console.log("Updated favorites:", response.data.favorites);
+
+        setFavorites([...response.data.favorites]);
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error(error.message);
+    }
+  };
+
+const getFavorites = async () => {
+  try {
+    if (!token) return;
+
+    const response = await axios.post(
+      backendUrl + "/api/user/get-favorites",
+      {},
+      { headers: { token } }
+    );
+
+    if (response.data.success) {
+      setFavorites(response.data.favorites);
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const isFavorite = (productId) => {
+  return favorites.some(
+    (id) => String(id) === String(productId)
+  );
+};
+
+const getFavoritesCount = () => {
+  return favorites.length;
+};
+
 
   const getProductsData = async () => {
     try {
@@ -139,8 +203,18 @@ const ShopContextProvider = ({ children }) => {
 
   useEffect(() => {
     getProductsData();
-    getUserCart(token);
-  }, []);
+
+    if (token) {
+      getUserCart(token);
+      getFavorites();
+    }
+  }, [token]);
+  
+  useEffect(() => {
+    if (token) {
+      getFavorites();
+    }
+  }, [token]);
 
   const value = {
     products,
@@ -160,6 +234,12 @@ const ShopContextProvider = ({ children }) => {
     backendUrl,
     token,
     setToken,
+    favorites,
+    setFavorites,
+    toggleFavorite,
+    getFavorites,
+    isFavorite,
+    getFavoritesCount,
   };
 
   return <ShopContext.Provider value={value}>{children}</ShopContext.Provider>;

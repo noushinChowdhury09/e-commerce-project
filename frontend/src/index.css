@@ -4,24 +4,64 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Active Navbar Link */
 a.active hr {
   display: block;
 }
 
+/* Global Styles */
 * {
-  font-family: Outfit;
+  font-family: Outfit, sans-serif;
+  box-sizing: border-box;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
+/* Website Background */
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: linear-gradient(
+    135deg,
+    #fffaf8 0%,
+    #fdf6f3 35%,
+    #f9f5ff 70%,
+    #fffaf8 100%
+  );
+  color: #1f2937;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Luxury Heading Font */
 .prata-regular {
   font-family: "Prata", serif;
   font-weight: 400;
   font-style: normal;
 }
 
+/* Hide Scrollbar */
 ::-webkit-scrollbar {
   display: none;
 }
 
+/* Smooth Hover Animation */
+img,
+button,
+a,
+.card,
+.product-card {
+  transition: all 0.3s ease;
+}
+
+/* Product Hover Effect */
+.product-card:hover {
+  transform: translateY(-6px);
+}
+
+/* Mobile Active Menu */
 @media (max-width: 640px) {
   a.active {
     background-color: black;

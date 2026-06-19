@@ -8,9 +8,10 @@ const addProduct = async (req, res) => {
       name,
       description,
       price,
+      stock,
       category,
       subCategory,
-      bestseller,
+      bestSeller,
       sizes,
     } = req.body;
 
@@ -37,15 +38,19 @@ const addProduct = async (req, res) => {
       description,
       category,
       price: Number(price),
+      stock: Number(stock),
       subCategory,
-      bestseller: bestseller === "true" ? true : false,
+      bestSeller: bestSeller === "true",
       sizes: JSON.parse(sizes.replace(/'/g, '"')),
       image: imagesUrl,
       date: Date.now(),
     };
-
+    console.log(productData);
     const product = new productModel(productData);
-    await product.save();
+    console.log("Product Keys:", Object.keys(product.toObject()));
+    console.log("Saving:", product);
+    const savedProduct = await product.save();
+    console.log("Saved Product:", savedProduct);
 
     res.json({ success: true, message: "Product Added" });
   } catch (error) {

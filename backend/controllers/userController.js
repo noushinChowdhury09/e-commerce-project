@@ -115,4 +115,102 @@ const adminLogin = async (req, res) => {
   }
 };
 
-export { loginUser, registerUser, adminLogin };
+const forgotPassword = async (req, res) => {
+  try {
+    const { email, newPassword } = req.body;
+
+    const user = await userModel.findOne({ email });
+
+    if (!user) {
+      return res.json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(newPassword, salt);
+
+    await userModel.findByIdAndUpdate(user._id, {
+      password: hashedPassword,
+    });
+
+    res.json({
+      success: true,
+      message: "Password updated successfully",
+    });
+  } catch (error) {
+    console.log(error);
+    res.json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+// Add / Remove Favorite
+
+// Add / Remove Favorite
+const toggleFavorite = async (req, res) => {
+  try {
+    const { productId } = req.body;
+    const userId = req.body.userId;
+
+    const user = await userModel.findById(userId);
+
+    let favorites = user.favorites || [];
+
+    if (favorites.includes(productId)) {
+      favorites = favorites.filter((id) => id !== productId);
+    } else {
+      favorites.push(productId);
+    }
+
+    await userModel.findByIdAndUpdate(userId, { favorites });
+
+    res.json({
+      success: true,
+      favorites,
+    });
+  } catch (error) {
+    console.log(error);
+    res.json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+
+
+// Get Favorites
+
+// Get Favorites
+const getFavorites = async (req, res) => {
+  try {
+    const userId = req.body.userId;
+
+    const user = await userModel.findById(userId);
+
+    res.json({
+      success: true,
+      favorites: user.favorites || [],
+    });
+  } catch (error) {
+    console.log(error);
+    res.json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+
+export {
+  loginUser,
+  registerUser,
+  adminLogin,
+  forgotPassword,
+  toggleFavorite,
+  getFavorites,
+};

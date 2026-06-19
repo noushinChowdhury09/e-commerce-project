@@ -1,10 +1,16 @@
 @import url("https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap");
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 * {
   font-family: Outfit;
+}
+
+body {
+  background: #f8f5f2;
+  font-family: "Outfit", sans-serif;
 }
 
 select,
@@ -16,6 +22,25 @@ textarea {
 }
 
 .active {
-  background-color: #ffebf5;
-  border-color: #c586a5;
+  background-color: #fbe7ef;
+  border-color: #d8b4c7;
+  color: #b76e8a;
+  font-weight: 500;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #d8b4c7;
+  border-radius: 10px;
+}
+
+button {
+  transition: all 0.3s ease;
+}
+
+button:hover {
+  transform: translateY(-1px);
 }

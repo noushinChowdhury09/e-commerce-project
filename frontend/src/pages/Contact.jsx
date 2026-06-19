@@ -16,21 +16,32 @@ const Contact = () => {
         />
         <div className="flex flex-col justify-center items-start gap-6">
           <div className="flex flex-col justify-center items-start gap-6">
-            <p className="font-semibold text-xl text-gray-600">Our Store</p>
-            <p className=" text-gray-500">
-              54709 Willms Station <br /> Suite 350, Washington, USA
+            <p className="font-semibold text-xl text-gray-600">Veloura Store</p>
+
+            <p className="text-gray-500">
+              New Town, Kolkata <br />
+              West Bengal, India
             </p>
-            <p className=" text-gray-500">
-              Tel: (415) 555-0132 <br /> Email: admin@forever.com
+
+            <p className="text-gray-500">
+              Tel: +91 98765 43210 <br />
+              Email: www.velourastore.com
             </p>
             <p className="font-semibold text-xl text-gray-600">
-              Careers at Forever
+              Customer Support
             </p>
-            <p className=" text-gray-500">
-              Learn more about our teams and job openings.
+
+            <p className="text-gray-500">
+              Have questions about your order, products, or delivery?
+              Our support team is here to help and ensure a smooth shopping experience.
             </p>
-            <button className="border border-black px-8 py-4 text-sm hover:bg-black hover:text-white transition-all duration-500">
-              Explore Jobs
+            <button
+              onClick={() =>
+              window.location.href = "mailto:support@velourastore.com"
+              }
+              className="border border-black px-8 py-4 text-sm hover:bg-black hover:text-white transition-all duration-500"
+            >
+              Contact Support
             </button>
           </div>
         </div>

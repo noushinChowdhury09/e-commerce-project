@@ -1,5 +1,6 @@
 import React from "react";
 import { assets } from "../assets/frontend_assets/assets";
+import { Link } from "react-router-dom";
 
 const Footer = () => {
   return (
@@ -8,34 +9,50 @@ const Footer = () => {
         <div>
           <img src={assets.logo} className="mb-5 w-32" alt="" />
           <p className="w-full md:w-2/3 text-gray-600">
-            Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry. Lorem Ipsum has been the industry's standard dummy text
-            ever since the 1500s, when an unknown printer took a galley of type
-            and scrambled it to make a type specimen book.
+            Veloura is a modern fashion destination offering premium clothing for Men, Women, and Kids. We focus on quality, comfort, and style, bringing the latest trends at affordable prices. Our mission is to make online shopping simple, secure, and enjoyable for everyone.
           </p>
         </div>
         <div>
           <p className="text-xl font-medium mb-5">COMPANY</p>
-          <ul className="flex flex-col gap-1 text-gray-600">
-            <li>Home</li>
-            <li>About us</li>
-            <li>Delivery</li>
-            <li>Privacy policy</li>
+          <ul className="flex flex-col gap-2 text-gray-600">
+            <li>
+              <Link to="/" className="hover:text-black">
+                Home
+              </Link>
+            </li>
+
+            <li>
+              <Link to="/about" className="hover:text-black">
+                About Us
+              </Link>
+            </li>
+
+            <li>
+              <Link to="/collection" className="hover:text-black">
+                Collections
+              </Link>
+            </li>
+
+            <li>
+              <Link to="/contact" className="hover:text-black">
+                Contact Us
+              </Link>
+            </li>
           </ul>
         </div>
         <div>
           <p className="text-xl font-medium mb-5">GET IN TOUCH</p>
           <ul className="flex flex-col gap-1 text-gray-600">
-            <li>+1-000-000-0000</li>
-            <li>devdiariesbyshozab@gmail.com</li>
-            <li className="cursor-pointer">Instagram</li>
+            <li>+91 98765 43210</li>
+            <li>www.velourastore.com</li>
+            <li className="cursor-pointer">Instagram: @velourastore</li>
           </ul>
         </div>
       </div>
       <div>
         <hr />
         <p className="py-5 text-sm text-center">
-          Copyright 2025@ ShozabAli06 - All Right Reserved.
+          © 2026 Veloura Store. All Rights Reserved.
         </p>
       </div>
     </div>

@@ -1,11 +1,11 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState} from "react";
 import Title from "../components/Title";
 import CartTotal from "../components/CartTotal";
 import { assets } from "../assets/frontend_assets/assets";
 import { ShopContext } from "../contexts/ShopContext";
 import axios from "axios";
 import { toast } from "react-toastify";
-
+import { useEffect } from "react";
 const PlaceOrder = () => {
   const [method, setMethod] = useState("cod");
   const { token } = useContext(ShopContext);
@@ -29,6 +29,12 @@ const PlaceOrder = () => {
     country: "",
     phone: "",
   });
+  useEffect(() => {
+    if (!token) {
+      toast.error("Please login first");
+      navigate("/login");
+    }
+  }, [token, navigate]);
 
   const onChangeHandler = (e) => {
     const name = e.target.name;
@@ -102,87 +108,116 @@ const PlaceOrder = () => {
     }
   };
 
+
   return (
-    <form
-      onSubmit={onSubmitHandler}
-      className="flex flex-col sm:flex-row justify-between gap-4 pt-5 sm:pt-14 min-h-[80vh] border-t"
-    >
-      <div className="flex flex-col gap-4 w-full sm:max-w-[480px]">
-        <div className="text-xl sm:text-2xl my-3">
-          <Title text1={"DELIVERY"} text2={"INFORMATION"} />
+    <div className="border-t pt-5 sm:pt-10 min-h-[80vh]">
+    
+    {/* Progress Indicator */}
+      <div className="mb-10">
+        <div className="flex justify-center items-center gap-3 text-sm sm:text-base font-medium">
+          <span className="text-pink-500">🛒 Cart</span>
+          <span>→</span>
+          <span className="text-pink-500">📍 Delivery</span>
+          <span>→</span>
+          <span className="text-pink-500">💳 Payment</span>
+          <span>→</span>
+          <span className="text-gray-400">✅ Complete</span>
         </div>
-        {/* left side */}
+      </div>
+
+      <form
+        onSubmit={onSubmitHandler}
+        className="flex flex-col lg:flex-row justify-between gap-10"
+      >
+        {/* Left Side */}
+        <div className="flex flex-col gap-4 w-full sm:max-w-[520px] bg-white shadow-lg rounded-2xl p-6">
+        
+          <div className="text-xl sm:text-2xl my-2">
+            <Title text1={"DELIVERY"} text2={"INFORMATION"} />
+          </div>
+
+          <p className="text-gray-500 text-sm mb-2">
+            Please enter your shipping details to continue.
+          </p>
+
+          <div className="flex gap-3">
+            <input
+              required
+              className="border border-gray-300 rounded-xl py-3 px-4 w-full focus:ring-2 focus:ring-pink-300"
+              type="text"
+              placeholder="First Name"
+              onChange={onChangeHandler}
+              name="firstName"
+              value={formData.firstName}
+            />
+
+            <input
+              required
+              className="border border-gray-300 rounded-xl py-3 px-4 w-full focus:ring-2 focus:ring-pink-300"
+              type="text"
+              placeholder="Last Name"
+              onChange={onChangeHandler}
+              name="lastName"
+              value={formData.lastName}
+            />
+          </div>
+
+          <input
+            required
+            className="border border-gray-300 rounded-xl py-3 px-4 w-full"
+            type="email"
+            placeholder="Email Address"
+            onChange={onChangeHandler}
+            name="email"
+            value={formData.email}
+          />
+
+          <input
+            required
+            className="border border-gray-300 rounded-xl py-3 px-4 w-full"
+            type="text"
+            placeholder="Street Address"
+            onChange={onChangeHandler}
+            name="street"
+            value={formData.street}
+          />
+
+          <div className="flex gap-3">
+            <input
+              required
+              className="border border-gray-300 rounded-xl py-3 px-4 w-full"
+              type="text"
+              placeholder="City"
+              onChange={onChangeHandler}
+              name="city"
+              value={formData.city}
+            />
+
+            <input
+              required
+              className="border border-gray-300 rounded-xl py-3 px-4 w-full"
+              type="text"
+              placeholder="State"
+              onChange={onChangeHandler}
+              name="state"
+              value={formData.state}
+            />
+          </div>
+
         <div className="flex gap-3">
           <input
             required
-            className="border border-gray-300 rounded py-1.5 px-3.5 w-full"
-            type="text"
-            placeholder="First Name"
-            onChange={onChangeHandler}
-            name="firstName"
-            value={formData.firstName}
-          />
-          <input
-            required
-            className="border border-gray-300 rounded py-1.5 px-3.5 w-full"
-            type="text"
-            placeholder="Last Name"
-            onChange={onChangeHandler}
-            name="lastName"
-            value={formData.lastName}
-          />
-        </div>
-        <input
-          required
-          className="border border-gray-300 rounded py-1.5 px-3.5 w-full"
-          type="email"
-          placeholder="Email Address"
-          onChange={onChangeHandler}
-          name="email"
-          value={formData.email}
-        />
-        <input
-          required
-          className="border border-gray-300 rounded py-1.5 px-3.5 w-full"
-          type="text"
-          placeholder="Street"
-          onChange={onChangeHandler}
-          name="street"
-          value={formData.street}
-        />
-        <div className="flex gap-3">
-          <input
-            required
-            className="border border-gray-300 rounded py-1.5 px-3.5 w-full"
-            type="text"
-            placeholder="City"
-            onChange={onChangeHandler}
-            name="city"
-            value={formData.city}
-          />
-          <input
-            required
-            className="border border-gray-300 rounded py-1.5 px-3.5 w-full"
-            type="text"
-            placeholder="State"
-            onChange={onChangeHandler}
-            name="state"
-            value={formData.state}
-          />
-        </div>
-        <div className="flex gap-3">
-          <input
-            required
-            className="border border-gray-300 rounded py-1.5 px-3.5 w-full"
+            className="border border-gray-300 rounded-xl py-3 px-4 w-full"
             type="number"
             placeholder="Zipcode"
             onChange={onChangeHandler}
             name="zipcode"
             value={formData.zipcode}
           />
+
           <input
             required
-            className="border border-gray-300 rounded py-1.5 px-3.5 w-full"
+            className="border border-gray-300 rounded-xl py-3 px-4 w-full"
             type="text"
             placeholder="Country"
             onChange={onChangeHandler}
@@ -190,72 +225,91 @@ const PlaceOrder = () => {
             value={formData.country}
           />
         </div>
+
         <input
           required
-          className="border border-gray-300 rounded py-1.5 px-3.5 w-full"
+          className="border border-gray-300 rounded-xl py-3 px-4 w-full"
           type="number"
-          placeholder="Phone"
+          placeholder="Phone Number"
           onChange={onChangeHandler}
           name="phone"
           value={formData.phone}
         />
       </div>
+
       {/* Right Side */}
-      <div className="mt-8">
-        <div className="mt-8 min-w-80">
+      <div className="w-full lg:max-w-[450px]">
+        
+        <div className="bg-white shadow-lg rounded-2xl p-6">
           <CartTotal />
+
+          <div className="mt-5 text-sm text-gray-500 space-y-2">
+            <p>🔒 Secure Checkout</p>
+            <p>🚚 Free Shipping above ₹999</p>
+            <p>↩️ Easy Returns & Exchanges</p>
+          </div>
         </div>
-        <div className="mt-12">
+
+        <div className="mt-6 bg-white shadow-lg rounded-2xl p-6">
           <Title text1={"PAYMENT"} text2={"METHOD"} />
-          {/* Payment method selection */}
-          <div className="flex gap-3 flex-col lg:flex-row">
+
+          <div className="flex flex-col gap-4 mt-5">
+
             <div
               onClick={() => setMethod("stripe")}
-              className="flex items-center gap-3 border p-2 px-3 cursor-pointer"
+              className={`flex items-center gap-3 border rounded-xl p-4 cursor-pointer transition-all ${
+                method === "stripe"
+                  ? "border-pink-400 bg-pink-50"
+                  : "hover:border-pink-300"
+              }`}
             >
               <p
-                className={`min-w-3.5 h-3.5 border rounded-full ${
-                  method === "stripe" ? "bg-green-400" : ""
+                className={`min-w-4 h-4 border rounded-full ${
+                  method === "stripe" ? "bg-pink-500" : ""
                 }`}
               ></p>
-              <img className="h-5 mx-4" src={assets.stripe_logo} />
+
+              <img
+                className="h-5 mx-2"
+                src={assets.stripe_logo}
+                alt=""
+              />
             </div>
-            {/* <div
-              onClick={() => setMethod("razorpay")}
-              className="flex items-center gap-3 border p-2 px-3 cursor-pointer"
-            >
-              <p
-                className={`min-w-3.5 h-3.5 border rounded-full ${
-                  method === "razorpay" ? "bg-green-400" : ""
-                }`}
-              ></p>
-              <img className="h-5 mx-4" src={assets.razorpay_logo} />
-            </div> */}
+
             <div
               onClick={() => setMethod("cod")}
-              className="flex items-center gap-3 border p-2 px-3 cursor-pointer"
+              className={`flex items-center gap-3 border rounded-xl p-4 cursor-pointer transition-all ${
+                method === "cod"
+                  ? "border-pink-400 bg-pink-50"
+                  : "hover:border-pink-300"
+              }`}
             >
               <p
-                className={`min-w-3.5 h-3.5 border rounded-full ${
-                  method === "cod" ? "bg-green-400" : ""
+                className={`min-w-4 h-4 border rounded-full ${
+                  method === "cod" ? "bg-pink-500" : ""
                 }`}
               ></p>
-              <p className="text-gray-500 text-sm font-medium mx-4">
+
+              <p className="font-medium text-gray-600">
                 CASH ON DELIVERY
               </p>
             </div>
+
           </div>
+
           <div className="w-full text-end mt-8">
             <button
               type="submit"
-              className="bg-black text-white px-16 py-3 text-sm"
+              className="bg-pink-500 hover:bg-pink-600 text-white px-16 py-4 rounded-xl text-sm font-medium transition-all shadow-md"
             >
               PLACE ORDER
             </button>
           </div>
         </div>
+
       </div>
     </form>
+  </div>
   );
 };
 

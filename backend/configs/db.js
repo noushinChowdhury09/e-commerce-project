@@ -1,11 +1,16 @@
 import mongoose from "mongoose";
 
 const connectDB = async () => {
-  mongoose.connection.on("connected", () => {
-    console.log("Database Connected Successfully");
-  });
+  try {
+    await mongoose.connect(
+      process.env.MONGODB_URI +
+      "/ecom?ssl=true&replicaSet=atlas-caes3d-shard-0&authSource=admin"
+    );
 
-  await mongoose.connect(`${process.env.MONGODB_URI}/ecom`);
+    console.log("Database Connected Successfully");
+  } catch (error) {
+    console.error(error);
+  }
 };
 
 export default connectDB;

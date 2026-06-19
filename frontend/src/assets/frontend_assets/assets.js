@@ -53,7 +53,12 @@ import p_img49 from './p_img49.png'
 import p_img50 from './p_img50.png'
 import p_img51 from './p_img51.png'
 import p_img52 from './p_img52.png'
-
+import banner1 from "./banner1.jpg"
+import banner2 from "./banner2.jpg"
+import banner3 from "./banner3.jpg"
+import banner4 from "./banner4.jpg"
+import banner5 from "./banner5.jpg"
+import banner6 from "./banner6.jpg"
 
 import logo from './logo.png'
 import hero_img from './hero_img.png'
@@ -92,7 +97,13 @@ export const assets = {
     contact_img,
     razorpay_logo,
     stripe_logo,
-    cross_icon
+    cross_icon,
+    banner1,
+    banner2,
+    banner3,
+    banner4,
+    banner5,
+    banner6
 }
 
 export const products = [

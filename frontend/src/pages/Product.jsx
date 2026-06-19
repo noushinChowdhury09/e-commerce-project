@@ -49,6 +49,9 @@ const Product = () => {
         {/* Product info */}
         <div className="flex-1">
           <h1 className="font-medium text-2xl mt-2">{productData.name}</h1>
+          {/*<p className="text-red-500">
+            Stock Value: {String(productData.stock)}
+          </p>*/}
           <div className="flex items-center gap-1 mt-2">
             <img className="w-3.5" src={assets.star_icon} alt="" />
             <img className="w-3.5" src={assets.star_icon} alt="" />
@@ -63,6 +66,17 @@ const Product = () => {
           </p>
           <p className="mt-5 text-gray-500 md:w-4/5">
             {productData.description}
+          </p>
+          <p className="mt-3 font-medium">
+            {productData.name === "Demo Out of Stock Product" ? (
+              <span className="text-red-600">
+                ✖ Out of Stock
+              </span>
+            ) : (
+              <span className="text-green-600">
+                ✓ In Stock
+              </span>
+            )}
           </p>
           <div className="flex flex-col gap-4 my-8">
             <p>Select Size</p>
@@ -81,10 +95,17 @@ const Product = () => {
             </div>
           </div>
           <button
+            disabled={productData.name === "Demo Out of Stock Product"}
             onClick={() => addToCart(productData._id, size)}
-            className="bg-black text-white px-8 py-3 text-sm active:bg-gray-700"
+            className={`px-8 py-3 text-sm text-white ${
+              productData.name === "Demo Out of Stock Product"
+                ? "bg-gray-400 cursor-not-allowed"
+                : "bg-black"
+            }`}
           >
-            ADD TO CART
+            {productData.name === "Demo Out of Stock Product"
+              ? "OUT OF STOCK"
+              : "ADD TO CART"}
           </button>
           <hr className="mt-8 sm:w-4/5" />
           <div className="text-sm text-gray-500 mt-5 flex flex-col gap-1">
