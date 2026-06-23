@@ -41,57 +41,6 @@ const placeOrder = async (req, res) => {
   }
 };
 
-// Placing order using Stripe
-const placeOrderStripe = async (req, res) => {
-  res.json({
-    success: false,
-    message: "Stripe disabled",
-  });
-};
-
-    const newOrder = new orderModel(orderData);
-    await newOrder.save();
-
-    const line_items = items.map((item) => ({
-      price_data: {
-        currency: currency,
-        product_data: {
-          name: item.name,
-        },
-        unit_amount: item.price * 100,
-      },
-      quantity: item.quantity,
-    }));
-    line_items.push({
-      price_data: {
-        currency: currency,
-        product_data: {
-          name: "Delivery Fee",
-        },
-        unit_amount: deliveryCharges * 100,
-      },
-      quantity: 1,
-    });
-    const session = await stripe.checkout.sessions.create({
-      success_url: `${origin}/verify?success=true&orderId=${newOrder._id}`,
-      cancel_url: `${origin}/verify?success=false&orderId=${newOrder._id}`,
-      line_items,
-      mode: "payment",
-    });
-
-    res.json({
-      success: true,
-      session_url: session.url,
-    });
-  } catch (error) {
-    console.log(error);
-    res.json({
-      success: false,
-      message: error.message,
-    });
-  }
-};
-
 // verify stripe
 const verifyStripe = async (req, res) => {
   res.json({
@@ -99,9 +48,21 @@ const verifyStripe = async (req, res) => {
     message: "Stripe disabled",
   });
 };
+// stripe disabled
+const placeOrderStripe = async (req, res) => {
+  res.json({
+    success: false,
+    message: "Stripe disabled",
+  });
+};
 
 // Placing order using Razorpay
-const placeOrderRazorpay = async (req, res) => {};
+const placeOrderRazorpay = async (req, res) => {
+  res.json({
+    success: false,
+    message: "Razorpay disabled",
+  });
+};
 
 // All orders data for admin panel
 const allOrders = async (req, res) => {
