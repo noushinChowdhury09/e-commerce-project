@@ -1,13 +1,13 @@
 import orderModel from "../models/orderModel.js";
 import userModel from "../models/userModel.js";
-import Stripe from "stripe";
+
 
 // Global variables
 const currency = "usd";
 const deliveryCharges = 10;
 
 // gateway initialize
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+
 
 // Placing order using COD
 const placeOrder = async (req, res) => {
@@ -43,19 +43,11 @@ const placeOrder = async (req, res) => {
 
 // Placing order using Stripe
 const placeOrderStripe = async (req, res) => {
-  try {
-    const { userId, items, amount, address } = req.body;
-    const { origin } = req.headers;
-
-    const orderData = {
-      userId,
-      items,
-      amount,
-      address,
-      paymentMethod: "Stripe",
-      payment: false,
-      date: Date.now(),
-    };
+  res.json({
+    success: false,
+    message: "Stripe disabled",
+  });
+};
 
     const newOrder = new orderModel(orderData);
     await newOrder.save();
@@ -102,25 +94,10 @@ const placeOrderStripe = async (req, res) => {
 
 // verify stripe
 const verifyStripe = async (req, res) => {
-  const { orderId, success, userId } = req.body;
-  try {
-    if (success === "true") {
-      await orderModel.findByIdAndUpdate(orderId, { payment: true });
-      await userModel.findByIdAndUpdate(userId, { cartdata: {} });
-      res.json({
-        success: true,
-      });
-    } else {
-      await orderModel.findByIdAndDelete(orderId);
-      res.json({ success: false });
-    }
-  } catch (error) {
-    console.log(error);
-    res.json({
-      success: false,
-      message: error.message,
-    });
-  }
+  res.json({
+    success: false,
+    message: "Stripe disabled",
+  });
 };
 
 // Placing order using Razorpay
